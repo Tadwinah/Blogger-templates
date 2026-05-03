@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم إدارة القوالب</title>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --dark: #1a1a2e;
+            --bg: #f8f9fa;
+            --card: white;
+            --border: #e0e0e0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: var(--bg);
+            line-height: 1.6;
+        }
+
+        /* القائمة الجانبية */
+        .sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--dark);
+            color: white;
+            padding: 30px 20px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #fff;
+            border-bottom: 2px solid #2196F3;
+            padding-bottom: 15px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 5px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            color: #ccc;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            font-size: 16px;
+            font-family: inherit;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(33,150,243,0.2);
+            color: white;
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            margin-right: 280px;
+            padding: 30px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* الإحصائيات */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        /* نموذج إضافة قالب */
+        .form-card {
+            background: var(--card);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(33,150,243,0.1);
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1976D2;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        /* جدول القوالب */
+        .table-container {
+            background: var(--card);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--dark);
+            color: white;
+            padding: 15px;
+            text-align: right;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .template-thumb {
+            width: 80px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .badge-primary {
+            background: #e3f2fd;
+            color: #1976D2;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 6px;
+        }
+
+        /* تحميل ملف */
+        .file-upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary);
+            background: #f0f8ff;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            display: none;
+            z-index: 9999;
+            animation: slideUp 0.3s;
+        }
+
+        .toast.success {
+            background: #28a745;
+        }
+
+        .toast.error {
+            background: #dc3545;
+        }
+
+        @keyframes slideUp {
+            from { transform: translate(-50%, 100px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 20px;
+            }
+            
+            .main-content {
+                margin-right: 0;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- القائمة الجانبية -->
+    <div class="sidebar">
+        <h2>⚙️ لوحة التحكم</h2>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <button class="nav-link active" onclick="showPage('dashboard')">
+                    📊 الإحصائيات
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="showPage('addTemplate')">
+                    ➕ إضافة قالب
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="showPage('manageTemplates')">
+                    📋 إدارة القوالب
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="showPage('settings')">
+                    ⚙️ الإعدادات
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="exportData()">
+                    💾 تصدير البيانات
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="window.open('YOUR_BLOGGER_PAGE_URL', '_blank')">
+                    🔗 فتح الأداة
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <!-- صفحة الإحصائيات -->
+        <div class="page active" id="dashboard">
+            <h1 style="margin-bottom:30px;">📊 لوحة الإحصائيات</h1>
+            <div class="stats-grid" id="statsContainer">
+                <div class="stat-card">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-value" id="totalTemplates">0</div>
+                    <div style="color:#666;">إجمالي القوالب</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⬇️</div>
+                    <div class="stat-value" id="totalDownloads">0</div>
+                    <div style="color:#666;">إجمالي التحميلات</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📂</div>
+                    <div class="stat-value" id="totalCategories">0</div>
+                    <div style="color:#666;">التصنيفات</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-value" id="avgRating">0</div>
+                    <div style="color:#666;">متوسط التقييم</div>
+                </div>
+            </div>
+
+            <!-- أكثر القوالب تحميلاً -->
+            <div class="form-card">
+                <h3 style="margin-bottom:20px;">🔥 أكثر القوالب تحميلاً</h3>
+                <div id="topTemplates"></div>
+            </div>
+        </div>
+
+        <!-- صفحة إضافة قالب -->
+        <div class="page" id="addTemplate">
+            <h1 style="margin-bottom:30px;">➕ إضافة قالب جديد</h1>
+            <div class="form-card">
+                <form id="addTemplateForm" onsubmit="addTemplate(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>اسم القالب *</label>
+                            <input type="text" id="templateName" required placeholder="مثال: قالب NewsMag"/>
+                        </div>
+                        <div class="form-group">
+                            <label>التصنيف *</label>
+                            <select id="templateCategory" required>
+                                <option value="">اختر التصنيف</option>
+                                <option value="أخبار">أخبار</option>
+                                <option value="تقنية">تقنية</option>
+                                <option value="SEO">SEO</option>
+                                <option value="شخصي">مدونة شخصية</option>
+                                <option value="تجاري">تجاري</option>
+                                <option value="تعليمي">تعليمي</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>المطور</label>
+                            <input type="text" id="developer" placeholder="اسم المطور أو الموقع"/>
+                        </div>
+                        <div class="form-group">
+                            <label>الإصدار</label>
+                            <input type="text" id="version" placeholder="مثال: 2.1"/>
+                        </div>
+                        <div class="form-group">
+                            <label>رابط التحميل *</label>
+                            <input type="url" id="downloadUrl" required placeholder="https://..."/>
+                        </div>
+                        <div class="form-group">
+                            <label>رابط المعاينة</label>
+                            <input type="url" id="previewUrl" placeholder="https://..."/>
+                        </div>
+                        <div class="form-group">
+                            <label>رابط الصورة *</label>
+                            <input type="url" id="imageUrl" required placeholder="رابط صورة القالب"/>
+                        </div>
+                        <div class="form-group">
+                            <label>التقييم (1-5)</label>
+                            <input type="number" id="rating" min="0" max="5" step="0.1" value="0"/>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>الوصف *</label>
+                            <textarea id="description" rows="3" required placeholder="وصف تفصيلي للقالب..."></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>المميزات (كل ميزة في سطر)</label>
+                            <textarea id="features" rows="3" placeholder="متجاوب&#10;SEO&#10;سريع"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <button type="submit" class="btn btn-primary">
+                                ✅ إضافة القالب
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- صفحة إدارة القوالب -->
+        <div class="page" id="manageTemplates">
+            <h1 style="margin-bottom:30px;">📋 إدارة القوالب</h1>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>صورة</th>
+                            <th>الاسم</th>
+                            <th>التصنيف</th>
+                            <th>المطور</th>
+                            <th>التحميلات</th>
+                            <th>التقييم</th>
+                            <th>إجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="templatesTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- صفحة الإعدادات -->
+        <div class="page" id="settings">
+            <h1 style="margin-bottom:30px;">⚙️ الإعدادات</h1>
+            <div class="form-card">
+                <form id="settingsForm" onsubmit="saveSettings(event)">
+                    <div class="form-group">
+                        <label>اسم الموقع</label>
+                        <input type="text" id="siteName" value="قوالب بلوجر الاحترافية"/>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف</label>
+                        <input type="text" id="siteDescription" value="أفضل قوالب بلوجر"/>
+                    </div>
+                    <div class="form-group">
+                        <label>رابط صفحة بلوجر</label>
+                        <input type="url" id="bloggerPageUrl" placeholder="رابط الصفحة في بلوجر"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">💾 حفظ الإعدادات</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- رسائل التنبيه -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ========== إعدادات GitHub ==========
+        const GITHUB_TOKEN = ''; // ضع توكن GitHub هنا (للحفظ التلقائي)
+        const GITHUB_OWNER = 'YOUR_USERNAME'; // اسم المستخدم
+        const GITHUB_REPO = 'blogger-templates'; // اسم المستودع
+        const DATA_FILE = 'data.json';
+        
+        let templates = [];
+        let settings = {};
+
+        // ========== تحميل البيانات ==========
+        function loadData() {
+            const savedData = localStorage.getItem('bloggerTemplatesData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                templates = data.templates || [];
+                settings = data.settings || {};
+                updateAllViews();
+            } else {
+                // تحميل افتراضي
+                templates = [];
+                settings = {
+                    siteName: 'قوالب بلوجر الاحترافية',
+                    description: 'أفضل قوالب بلوجر'
+                };
+                saveData();
+            }
+        }
+
+        function saveData() {
+            const data = {
+                templates: templates,
+                settings: settings
+            };
+            localStorage.setItem('bloggerTemplatesData', JSON.stringify(data));
+            updateAllViews();
+            showToast('✅ تم حفظ البيانات محلياً', 'success');
+        }
+
+        // ========== إضافة قالب ==========
+        function addTemplate(event) {
+            event.preventDefault();
+            
+            const newTemplate = {
+                id: Date.now(),
+                name: document.getElementById('templateName').value,
+                category: document.getElementById('templateCategory').value,
+                description: document.getElementById('description').value,
+                image: document.getElementById('imageUrl').value,
+                downloadUrl: document.getElementById('downloadUrl').value,
+                previewUrl: document.getElementById('previewUrl').value,
+                developer: document.getElementById('developer').value,
+                rating: parseFloat(document.getElementById('rating').value) || 0,
+                version: document.getElementById('version').value,
+                downloads: 0,
+                features: document.getElementById('features').value
+                    .split('\n')
+                    .filter(f => f.trim())
+                    .map(f => f.trim())
+            };
+
+            templates.unshift(newTemplate);
+            saveData();
+            
+            // تنظيف النموذج
+            document.getElementById('addTemplateForm').reset();
+            
+            showToast('🎉 تم إضافة القالب بنجاح!', 'success');
+            showPage('manageTemplates');
+        }
+
+        // ========== حذف قالب ==========
+        function deleteTemplate(id) {
+            if (confirm('هل أنت متأكد من حذف هذا القالب؟')) {
+                templates = templates.filter(t => t.id !== id);
+                saveData();
+                showToast('🗑️ تم حذف القالب', 'success');
+            }
+        }
+
+        // ========== تصدير البيانات ==========
+        function exportData() {
+            const data = {
+                templates: templates,
+                settings: settings
+            };
+            
+            const jsonString = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'data.json';
+            a.click();
+            
+            URL.revokeObjectURL(url);
+            showToast('💾 تم تصدير البيانات كملف JSON', 'success');
+        }
+
+        // ========== تحديث العرض ==========
+        function updateAllViews() {
+            // تحديث الإحصائيات
+            document.getElementById('totalTemplates').textContent = templates.length;
+            
+            const totalDownloads = templates.reduce((sum, t) => sum + (t.downloads || 0), 0);
+            document.getElementById('totalDownloads').textContent = totalDownloads;
+            
+            const categories = new Set(templates.map(t => t.category));
+            document.getElementById('totalCategories').textContent = categories.size;
+            
+            const avgRating = templates.length > 0 
+                ? (templates.reduce((sum, t) => sum + (t.rating || 0), 0) / templates.length).toFixed(1)
+                : 0;
+            document.getElementById('avgRating').textContent = avgRating;
+
+            // تحديث جدول القوالب
+            updateTemplatesTable();
+            
+            // تحديث أكثر القوالب تحميلاً
+            updateTopTemplates();
+        }
+
+        function updateTemplatesTable() {
+            const tbody = document.getElementById('templatesTableBody');
+            
+            if (templates.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;">لا توجد قوالب بعد</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = templates.map(t => `
+                <tr>
+                    <td>
+                        <img src="${t.image}" alt="${t.name}" class="template-thumb"
+                             onerror="this.src='https://via.placeholder.com/80x50'"/>
+                    </td>
+                    <td><strong>${t.name}</strong></td>
+                    <td><span class="badge badge-primary">${t.category}</span></td>
+                    <td>${t.developer || '-'}</td>
+                    <td>${(t.downloads || 0).toLocaleString()}</td>
+                    <td>⭐ ${t.rating || 0}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn btn-sm btn-primary" onclick="editTemplate(${t.id})">
+                                ✏️ تعديل
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteTemplate(${t.id})">
+                                🗑️ حذف
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateTopTemplates() {
+            const topTemplates = templates
+                .sort((a, b) => (b.downloads || 0) - (a.downloads || 0))
+                .slice(0, 5);
+            
+            const container = document.getElementById('topTemplates');
+            
+            if (topTemplates.length === 0) {
+                container.innerHTML = '<p style="color:#999;">لا توجد بيانات بعد</p>';
+                return;
+            }
+            
+            container.innerHTML = topTemplates.map((t, index) => `
+                <div style="display:flex;align-items:center;gap:15px;margin-bottom:15px;padding:10px;background:#f8f9fa;border-radius:10px;">
+                    <span style="font-size:24px;font-weight:bold;color:#2196F3;">#${index + 1}</span>
+                    <img src="${t.image}" style="width:60px;height:40px;object-fit:cover;border-radius:5px;" alt="${t.name}"/>
+                    <div style="flex:1;">
+                        <strong>${t.name}</strong>
+                        <div style="color:#666;font-size:14px;">⬇️ ${(t.downloads || 0).toLocaleString()} تحميل</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ========== التنقل بين الصفحات ==========
+        function showPage(pageName) {
+            // إخفاء كل الصفحات
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            
+            // إظهار الصفحة المطلوبة
+            document.getElementById(pageName).classList.add('active');
+            event.target.classList.add('active');
+            
+            // تحديث المحتوى
+            updateAllViews();
+        }
+
+        // ========== حفظ الإعدادات ==========
+        function saveSettings(event) {
+            event.preventDefault();
+            
+            settings.siteName = document.getElementById('siteName').value;
+            settings.description = document.getElementById('siteDescription').value;
+            settings.bloggerPageUrl = document.getElementById('bloggerPageUrl').value;
+            
+            saveData();
+            showToast('✅ تم حفظ الإعدادات', 'success');
+        }
+
+        // ========== رسائل التنبيه ==========
+        function showToast(message, type = '') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            toast.style.display = 'block';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        // ========== تحميل عند البداية ==========
+        loadData();
+
+        // للتحميل من GitHub تلقائياً عند الحاجة
+        async function loadFromGitHub() {
+            try {
+                const response = await fetch(
+                    `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main/${DATA_FILE}`
+                );
+                if (response.ok) {
+                    const data = await response.json();
+                    templates = data.templates || [];
+                    settings = data.settings || {};
+                    saveData();
+                    showToast('✅ تم تحميل البيانات من GitHub', 'success');
+                }
+            } catch (error) {
+                showToast('⚠️ تعذر تحميل البيانات من GitHub', 'error');
+            }
+        }
+    </script>
+</body>
+</html>
