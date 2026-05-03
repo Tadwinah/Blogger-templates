@@ -1,8 +1,80 @@
 {
-  "templates": [],
+  "templates": [
+    {
+      "id": 1,
+      "name": "قالب ViperMag الإخباري",
+      "category": "أخبار",
+      "description": "قالب بلوجر احترافي للمواقع الإخبارية والمجلات، متوافق مع محركات البحث وسريع التحميل مع دعم كامل للإعلانات",
+      "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjLgF7Yq5tVZxkW8zY6sP4uN3mK9wR2hJ8vD5fG1bA0cT7eW4yX6oQ/s1600/vipermag.jpg",
+      "downloadUrl": "https://www.gooyaabitemplates.com/2024/01/vipermag-blogger-template.html",
+      "previewUrl": "https://vipermag-demo.blogspot.com",
+      "developer": "Gooyaabi Templates",
+      "rating": 4.8,
+      "downloads": 15420,
+      "features": ["متجاوب", "SEO", "سريع", "إعلانات جاهزة", "قائمة منسدلة"],
+      "version": "2.1"
+    },
+    {
+      "id": 2,
+      "name": "قالب SoraTech التقني",
+      "category": "تقنية",
+      "description": "قالب مميز للمدونات التقنية بتصميم عصري وألوان جذابة مع دعم كامل للهواتف والأجهزة اللوحية",
+      "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiMkL9pW3xR7dF4vB2nH6jK1mN8sA5cT0wY3uG9oI4eD6fJ2hV7aZ/s1600/soratech.jpg",
+      "downloadUrl": "https://www.sorabloggingtips.com/2024/02/soratech-blogger-template.html",
+      "previewUrl": "https://soratech-demo.blogspot.com",
+      "developer": "Sora Blogging Tips",
+      "rating": 4.9,
+      "downloads": 12350,
+      "features": ["متجاوب", "SEO", "قائمة منسدلة", "سلايدر", "ألوان متعددة"],
+      "version": "3.0"
+    },
+    {
+      "id": 3,
+      "name": "قالب FlexMag الشخصي",
+      "category": "شخصي",
+      "description": "قالب أنيق للمدونات الشخصية واليوميات مع تصميم بسيط وجذاب يناسب جميع الأذواق",
+      "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgPqR1tZ6xL4nM9kH3wJ8vC5bA2dF7sY0uG6iK3oW5eT9mN4vX1cB/s1600/flexmag.jpg",
+      "downloadUrl": "https://www.templateism.com/2024/03/flexmag-blogger-template.html",
+      "previewUrl": "https://flexmag-demo.blogspot.com",
+      "developer": "Templateism",
+      "rating": 4.7,
+      "downloads": 8750,
+      "features": ["بسيط", "متجاوب", "ألوان متعددة", "خطوط عربية"],
+      "version": "1.5"
+    },
+    {
+      "id": 4,
+      "name": "قالب SEO Plus",
+      "category": "SEO",
+      "description": "قالب محسن بالكامل لمحركات البحث مع سرعة فائقة ونتائج مضمونة في جوجل",
+      "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhN3mK5pR8sA2dF7vB4nJ9wL6cT1yG0iM3uW5oV8eZ2kD9fI4hX6sY/s1600/seoplus.jpg",
+      "downloadUrl": "https://www.example.com/seo-plus-template",
+      "previewUrl": "https://seoplus-demo.blogspot.com",
+      "developer": "TemplateToaster",
+      "rating": 4.6,
+      "downloads": 10200,
+      "features": ["SEO", "سريع جداً", "Schema", "Breadcrumbs"],
+      "version": "2.8"
+    },
+    {
+      "id": 5,
+      "name": "قالب NewsGrid",
+      "category": "أخبار",
+      "description": "قالب عصري بتصميم الشبكة لعرض الأخبار والمقالات بشكل جذاب ومنظم",
+      "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiP9rT4xZ7nL5oM2kH8wJ3vC6bA1dF0sY9uG7iK6oW4eT8mN3vX5cL/s1600/newsgrid.jpg",
+      "downloadUrl": "https://www.example.com/newsgrid-template",
+      "previewUrl": "https://newsgrid-demo.blogspot.com",
+      "developer": "ThemeXpose",
+      "rating": 4.5,
+      "downloads": 7800,
+      "features": ["Grid Layout", "متجاوب", "سريع", "إعلانات"],
+      "version": "1.2"
+    }
+  ],
   "settings": {
     "siteName": "قوالب بلوجر الاحترافية",
-    "description": "أفضل قوالب بلوجر المجانية",
-    "featuredCategories": ["أخبار", "تقنية", "SEO", "شخصي"]
+    "description": "أفضل قوالب بلوجر المجانية والاحترافية - تحميل مباشر",
+    "contactEmail": "your-email@example.com",
+    "featuredCategories": ["أخبار", "تقنية", "SEO", "شخصي", "تجاري"]
   }
 }
